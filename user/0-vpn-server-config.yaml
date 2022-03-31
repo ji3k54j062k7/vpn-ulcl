@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+  wg0.conf: |
+    [Interface]
+    Address = 10.200.20.1
+    ListenPort = 51820
+    PrivateKey = kADjRgxoPBHHpZ1jlFyJTY8sh4J8xaMDsIHIo5/6DHA=
+    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT;
+    PostDown = iptables -D FORWRD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT;
+
+    [Peer]
+    # peer1
+    PublicKey = oMuvVlPNfE/oI2Ucd74rCfHSzlmqrBFG+n8T5S5cfTQ=
+    AllowedIPs = 10.200.20.9/32
+
+kind: ConfigMap
+metadata:
+  name: wg-server

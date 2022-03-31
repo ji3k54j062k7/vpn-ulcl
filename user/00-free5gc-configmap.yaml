@@ -1,0 +1,127 @@
+apiVersion: v1
+data:
+  free5GC.conf: |
+    db_uri: mongodb://mongodb-svc:27017/free5GC
+
+    #all logging levels
+    #panic
+    #fatal
+    #error
+    #warn
+    #info
+    #debug
+    #trace
+    logger:
+    # network function
+      AMF:
+        debugLevel: info
+        ReportCaller: true
+      SMF:
+        debugLevel: info
+        ReportCaller: true
+      UDR:
+        debugLevel: info
+        ReportCaller: true
+      UDM:
+        debugLevel: info
+        ReportCaller: true
+      NRF:
+        debugLevel: info
+        ReportCaller: true
+      PCF:
+        debugLevel: info
+        ReportCaller: true
+      AUSF:
+        debugLevel: info
+        ReportCaller: true
+      N3IWF:
+        debugLevel: info
+        ReportCaller: true
+    # library
+      NAS:
+        debugLevel: info
+        ReportCaller: true
+      FSM:
+        debugLevel: info
+        ReportCaller: true
+      NGAP:
+        debugLevel: info
+        ReportCaller: true
+      NamfComm:
+        debugLevel: info
+        ReportCaller: true
+      NamfEventExposure:
+        debugLevel: info
+        ReportCaller: true
+      NsmfPDUSession:
+        debugLevel: info
+        ReportCaller: true
+      NudrDataRepository:
+        debugLevel: info
+        ReportCaller: true
+      OpenApi:
+        debugLevel: info
+        ReportCaller: true
+      Aper:
+        debugLevel: info
+        ReportCaller: true
+      CommonConsumerTest:
+        debugLevel: info
+        ReportCaller: true
+    # webui
+      WEBUI:
+        debugLevel: info
+        ReportCaller: true
+
+  upfcfg.yaml: |
+    info:
+      version: 1.0.0
+      description: UPF configuration
+
+    configuration:
+      debugLevel: info
+      ReportCaller: false
+
+      pfcp:
+        - addr: 10.200.10.2
+
+      gtpu:
+        - addr: free5gc-upf-svc
+
+      dnn_list:
+        - dnn: intranet
+          cidr: 60.60.0.0/24
+
+
+  anchor2-upfcfg.yaml: |
+    info:
+      version: 1.0.0
+      description: UPF configuration
+
+    configuration:
+      # debugLevel: panic|fatal|error|warn|info|debug|trace
+      debugLevel: info
+      # ReportCaller: true|false
+      ReportCaller: false
+
+      pfcp:
+        - addr: 10.200.10.3
+
+      gtpu:
+        - addr: free5gc-anchor2-upf-svc
+        # [optional] gtpu.name
+        # - name: free5gc-upf-svc
+        # [optional] gtpu.ifname
+        # - ifname: upfgtp
+
+      dnn_list:
+        - dnn: internet
+          cidr: 60.60.0.0/24
+          # [optional] dnn_list[*].natifname
+          # natifname: eth0
+
+
+kind: ConfigMap
+metadata:
+  name: free5gc-configmap
+
