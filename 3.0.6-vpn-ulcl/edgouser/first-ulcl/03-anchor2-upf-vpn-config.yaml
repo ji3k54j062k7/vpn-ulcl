@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  wg0.conf: |
+    [Interface]
+    Address = 10.200.10.3
+    PrivateKey = oCqjicDt3pvul5A3Fa4Dqi67wThzBnq9ZaMp772mLm8=
+    ListenPort = 51820
+
+    [Peer]
+    PublicKey = 6/kB+4iJpL9K84eY4edmpJxI9Pzye/K3e2yVOZ7IwDk=
+    Endpoint = 10.0.0.203:31820
+    AllowedIPs = 10.244.0.0/16
+    PersistentKeepalive = 1
+kind: ConfigMap
+metadata:
+  name: anchor2-upf-vpn
+
