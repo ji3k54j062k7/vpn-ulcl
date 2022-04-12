@@ -1,0 +1,59 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    k8s-app: wireguard
+  name: wireguard-second-service
+spec:
+  type: NodePort
+  ports:
+    - port: 31821
+      nodePort: 31821
+      protocol: UDP
+      targetPort: 51820
+  selector:
+    app: wireguard-second
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard-second
+  labels:
+    app: wireguard-second
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard-second
+  template:
+    metadata:
+      labels:
+        app: wireguard-second
+    spec:
+      containers:
+        - name: wireguard-second
+          image: newnoobtank/wg-vpn:latest
+          command: [ "/bin/sh" ]
+          args: [ "-c", "wg-quick up wg0 && sleep 365d" ]
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_MODULE
+            privileged: true
+          volumeMounts:
+            - name: wg-config
+              mountPath: /etc/wireguard/
+            - name: host-volumes
+              mountPath: /lib/modules
+      volumes:
+        - name: wg-config
+          configMap:
+            name: wg-second-server
+            items:
+              - key: wg0.conf
+                path: wg0.conf
+        - name: host-volumes
+          hostPath:
+            path: /lib/modules
+            type: Directory

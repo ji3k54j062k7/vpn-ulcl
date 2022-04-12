@@ -17,7 +17,7 @@ data:
 
       # The IP list of the N4 interface on this UPF (Can't set to 0.0.0.0)
       pfcp:
-        - addr: free5gc-upf-b2-svc
+        - addr: 10.200.10.6
 
       # The IP list of the N3/N9 interfaces on this UPF
       # If there are multiple connection, set addr to 0.0.0.0 or list all the addresses
@@ -82,6 +82,21 @@ spec:
         - name: upfcfg
           mountPath: /free5gc/NFs/upf/build/config/upfcfg.yaml
           subPath: upfcfg.yaml
+      initContainers:
+      - name: wireguard-client
+        image: newnoobtank/wg-vpn
+        command: ["/bin/bash", "-c", "wg-quick up wg0"]
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - SYS_MODULE
+          privileged: true
+        volumeMounts:
+          - name: wg-client-config
+            mountPath: /etc/wireguard/
+          - name: host-volumes
+            mountPath: /lib/modules
       volumes:
       - name: tun-volume
         hostPath:
@@ -92,3 +107,13 @@ spec:
           items:
           - key: upfcfg.yaml
             path: upfcfg.yaml
+      - name: wg-client-config
+        configMap:
+          name: branch2-upf-vpn
+          items:
+          - key: wg0.conf
+            path: wg0.conf
+      - name: host-volumes
+        hostPath:
+          path: /lib/modules
+          type: Directory

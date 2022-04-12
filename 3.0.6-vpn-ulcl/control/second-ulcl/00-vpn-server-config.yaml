@@ -1,0 +1,28 @@
+apiVersion: v1
+data:
+  wg0.conf: |
+    [Interface]
+    Address = 10.200.10.5
+    ListenPort = 51820
+    PrivateKey = WJZRgiT5ZHJiZJCo0WcwZztYvfpbYTepXLEI4D60LUE=
+    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+    [Peer]
+    # peer1
+    PublicKey = yzyn0cnF5ci+6Z5KdRibqEzHzU12tIUSuYIhAqGKPSo=
+    AllowedIPs = 10.200.10.6/32
+
+    [Peer]
+    # peer2
+    PublicKey = pKWXo17ycMyVQCIBBPgtMDamqiNtjVFuPj13k5qJ1TA=
+    AllowedIPs = 10.200.10.7/32
+
+    [Peer]
+    # peer3
+    PublicKey = fPD8RFRcxDgxwKuyYt77gkrLKJANI3o7Kx2qGrRtwHI=
+    AllowedIPs = 10.200.10.8/32
+
+kind: ConfigMap
+metadata:
+  name: wg-second-server

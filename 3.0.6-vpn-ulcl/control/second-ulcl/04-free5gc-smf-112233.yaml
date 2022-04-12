@@ -39,7 +39,7 @@ data:
             type: AN
           BranchingUPF:
             type: UPF
-            node_id: free5gc-upf-b2-svc
+            node_id: 10.200.10.6
             sNssaiUpfInfos:
               - sNssai:
                   sst: 1
@@ -49,13 +49,12 @@ data:
             interfaces:
               - interfaceType: N3
                 endpoints:
-                  - free5gc-upf-b2-svc
+                  - 10.245.1.11
                 networkInstance: internet
               - interfaceType: N9
                 endpoints:
-                  - free5gc-upf-b2-svc
+                  - 10.245.1.11
                 networkInstance: internet
-
           AnchorUPF1:
             type: UPF
             node_id: free5gc-upf-a3-svc
@@ -70,16 +69,15 @@ data:
             interfaces:
               - interfaceType: N9
                 endpoints:
-                  - free5gc-upf-a3-svc
+                  - 10.200.20.10
                 networkInstance: internet
-
           AnchorUPF2:
             type: UPF
-            node_id: free5gc-upf-a4-svc
+            node_id: 10.200.10.7
             interfaces:
               - interfaceType: N9
                 endpoints:
-                  - free5gc-upf-a4-svc
+                  - 10.245.1.14
                 networkInstance: internet
         links:
           - A: gNB1
@@ -89,7 +87,7 @@ data:
           - A: BranchingUPF
             B: AnchorUPF2
       nrfUri: http://free5gc-nrf-svc:8000
-      locality: area2
+      locality: area1
       ulcl: true
 
     logger:
